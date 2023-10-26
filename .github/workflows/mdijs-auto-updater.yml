@@ -33,6 +33,7 @@ jobs:
           fallback: 1.0.0
 
       - name: Output variables
+        shell: bash
         run: |
           local_version="${{ steps.mdijs-version-local.outputs.value }}"
           remote_version="${{ steps.mdijs-version-remote.outputs.tag }}"
