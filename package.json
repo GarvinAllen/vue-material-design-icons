@@ -1,10 +1,10 @@
 {
   "name": "vue-material-design-icons",
-  "version": "3.2.0",
+  "version": "7.1.96",
   "author": "Rob Cresswell <robcresswell@pm.me>",
   "license": "MIT",
   "description": "A collection of material design icons as Vue single file components",
-  "repository": "github:robcresswell/vue-material-design-icons",
+  "repository": "github:garvinallen/vue-material-design-icons",
   "keywords": [
     "vue",
     "material design icons",
@@ -36,9 +36,9 @@
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.7.14"
   },
-  "homepage": "https://github.com/robcresswell/vue-material-design-icons",
+  "homepage": "https://github.com/garvinallen/vue-material-design-icons",
   "bugs": {
-    "url": "https://github.com/robcresswell/vue-material-design-icons/issues"
+    "url": "https://github.com/garvinallen/vue-material-design-icons/issues"
   },
   "scripts": {
     "prebuild": "rm -rf dist/",
