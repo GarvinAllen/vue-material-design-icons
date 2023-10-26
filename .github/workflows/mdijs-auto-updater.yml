@@ -20,9 +20,9 @@ jobs:
 
       - name: mdijs version (remote)
         id: mdijs-version-remote
-        uses: pozetroninc/github-action-get-latest-release@master
+        uses: tdemin/find-latest-tag@v1
         with:
-          repository: Templarian/MaterialDesign-JS
+          repo: https://github.com/Templarian/MaterialDesign-JS
 
       - name: mdijs version (local)
         id: mdijs-verision-local
@@ -32,11 +32,18 @@ jobs:
           property: '@devDependencies.@mdi/js'
           fallback: 1.0.0
 
-      - name: output latest version
-        run: echo "version=${{ steps.mdijs-version-remote.outputs.release }}" >> $GITHUB_OUTPUT
-
-      - name: output diff
-        run: echo "isUpToDate=${{ steps.mdijs-verision-local.outputs.value == steps.mdijs-version-remote.outputs.release }}" >> $GITHUB_OUTPUT
+      - name: Output variables
+        run: |
+          local_version="${{ steps.mdijs-version-local.outputs.value }}"
+          remote_version="${{ steps.mdijs-version-remote.outputs.tag#v }}"
+          
+          # Compare the versions
+          if [ "$local_version" == "$remote_version" ]; then
+            echo "isUpToDate=true" >> $GITHUB_OUTPUT
+            echo "version=${{ remote_version }}" >> $GITHUB_OUTPUT
+          else
+            echo "isUpToDate=false" >> $GITHUB_OUTPUT
+          fi
 
   update-mdijs-version:
     runs-on: ubuntu-latest
