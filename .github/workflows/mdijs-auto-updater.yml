@@ -18,18 +18,16 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: mdijs version (remote)
-        id: mdijs-version-remote
+      - name: mdijs-version-remote
         uses: tdemin/find-latest-tag@v1
         with:
           repo: https://github.com/Templarian/MaterialDesign-JS
 
-      - name: mdijs version (local)
-        id: mdijs-verision-local
+      - id: mdijs-verision-local
         uses: amochkin/action-json@v1
         with:
           mode: read
-          property: '@devDependencies.@mdi/js'
+          property: 'devDependencies.@mdi/js'
           fallback: 1.0.0
 
       - name: Output variables
@@ -62,7 +60,7 @@ jobs:
         uses: amochkin/action-json@v1
         with:
           mode: write
-          property: '@devDependencies.@mdi/js'
+          property: 'devDependencies.@mdi/js'
           value: ${{ needs.mdijs-version.outputs.version }}
 
       - name: Update @garvinallen/vue-material-design-icons version
@@ -85,3 +83,4 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "chore: bump @mdi/js to ${{ needs.mdijs-version.outputs.version }}"
