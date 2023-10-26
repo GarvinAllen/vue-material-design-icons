@@ -35,7 +35,8 @@ jobs:
       - name: Output variables
         run: |
           local_version="${{ steps.mdijs-version-local.outputs.value }}"
-          remote_version="${{ steps.mdijs-version-remote.outputs.tag#v }}"
+          remote_version="${{ steps.mdijs-version-remote.outputs.tag }}"
+          remote_version="${remote_version#v}" ## remove "v" prefix
           
           # Compare the versions
           if [ "$local_version" == "$remote_version" ]; then
