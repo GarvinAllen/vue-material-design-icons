@@ -42,7 +42,7 @@ jobs:
           # Compare the versions
           if [ "$local_version" == "$remote_version" ]; then
             echo "isUpToDate=true" >> $GITHUB_OUTPUT
-            echo "version=${{ remote_version }}" >> $GITHUB_OUTPUT
+            echo "version=${remote_version}" >> $GITHUB_OUTPUT
           else
             echo "isUpToDate=false" >> $GITHUB_OUTPUT
           fi
