@@ -48,19 +48,8 @@ jobs:
   update:
     runs-on: ubuntu-latest
     needs: [check]
-    # if: always() && needs.check.outputs.should_update == 'true'
+    if: needs.check.outputs.local_version != needs.check.outputs.remote_version
     steps:
-      - name: debug 
-        shell: bash
-        run: | 
-          update=${{needs.check.outputs.should_update}}
-          local_version="${{needs.check.outputs.local_version}}" 
-          remote_version="${{needs.check.outputs.remote_version}}"
-
-          echo "update:${update}"
-          echo "local:${local_version}"
-          echo "remote:${remote_version}"
-
       - uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -74,13 +63,6 @@ jobs:
           property: 'devDependencies.@mdi/js'
           value: ${{ needs.check.outputs.remote_version }}
 
-      - name: Update @garvinallen/vue-material-design-icons version
-        uses: amochkin/action-json@v1
-        with:
-          mode: write
-          property: version
-          value: ${{ needs.check.outputs.remote_version }}
-
       - name: Install
         run: npm install
 
@@ -90,9 +72,9 @@ jobs:
       - name: Test
         run: npm run test
 
-      - name: Commit & Push
-        uses: actions-js/push@master
-        with:
-          branch: dev
-          message: "chore: bump @mdi/js to ${{ needs.check.outputs.version }}"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        with: 
+          title: 'Bump @mdi/js from ${{ needs.check.outputs.local_version }} to ${{ needs.check.outputs.remote_version }}'
+          body: 'Bumps @mdi/js from ${{ needs.check.outputs.local_version }} to ${{ needs.check.outputs.remote_version }}'
+          commit-message: 'Bump @mdi/js from ${{ needs.check.outputs.local_version }} to ${{ needs.check.outputs.remote_version }}'
