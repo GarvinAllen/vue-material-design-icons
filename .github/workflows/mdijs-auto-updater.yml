@@ -30,12 +30,17 @@ jobs:
           property: 'devDependencies.@mdi/js'
           fallback: 1.0.0
 
+      - name: Set Local Version variable
+        run: echo "LOCAL_VERSION=${{ steps.mdijs-version-local.outputs.value }}" >> $GITHUB_ENV
+
+      - name: Set Remote Version variable
+        run: echo "REMOTE_VERSION=${{ steps.mdijs-version-local.outputs.value }}" >> $GITHUB_ENV
+
       - name: Output variables
         shell: bash
         run: |
-          local_version="${{ steps.mdijs-version-local.outputs.value }}"
-          remote_version="${{ steps.mdijs-version-remote.outputs.tag }}"
-          remote_version="${remote_version#v}" ## remove "v" prefix
+          local_version="${LOCAL_VERSION}" 
+          remote_version="${REMOTE_VERSION#v}" # remove "v" prefix
           
           # Compare the versions
           if [ "$local_version" == "$remote_version" ]; then
@@ -82,5 +87,6 @@ jobs:
       - name: Commit & Push
         uses: actions-js/push@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
           message: "chore: bump @mdi/js to ${{ needs.mdijs-version.outputs.version }}"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
