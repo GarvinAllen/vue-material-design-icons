@@ -18,9 +18,9 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - uses: oprypin/find-latest-tag@v1
+      - id: remote_version
+        uses: oprypin/find-latest-tag@v1
         with:
-          id: remote_version
           repository: Templarian/MaterialDesign-JS
           releases-only: false
 
