@@ -18,10 +18,11 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: remote_version
-        uses: tdemin/find-latest-tag@v1
+      - uses: oprypin/find-latest-tag@v1
         with:
-          repo: https://github.com/Templarian/MaterialDesign-JS
+          id: remote_version
+          repository: Templarian/MaterialDesign-JS
+          releases-only: false
 
       - id: local_version
         uses: amochkin/action-json@v1
