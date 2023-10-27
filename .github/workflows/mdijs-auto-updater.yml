@@ -52,7 +52,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     needs: [check]
-    if: needs.check.outputs.should_update == 'true'
+    if: always() && needs.check.outputs.should_update == 'true'
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
