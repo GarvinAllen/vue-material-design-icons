@@ -52,8 +52,14 @@ jobs:
   update:
     runs-on: ubuntu-latest
     needs: [check]
-    if: always() && needs.check.outputs.should_update == 'true'
+    # if: always() && needs.check.outputs.should_update == 'true'
     steps:
+      - name: debug 
+        run: | 
+          echo "update: ${needs.check.outputs.should_update}"S
+          echo "local:${needs.check.outputs.local_version}"S
+          echo "remote:${needs.check.outputs.remote_version}"S
+
       - uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
