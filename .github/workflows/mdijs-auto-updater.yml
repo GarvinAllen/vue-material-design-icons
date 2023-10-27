@@ -63,6 +63,13 @@ jobs:
           property: 'devDependencies.@mdi/js'
           value: ${{ needs.check.outputs.remote_version }}
 
+      - name: Update our version
+        uses: amochkin/action-json@v1
+        with:
+          mode: write
+          property: 'version'
+          value: ${{ needs.check.outputs.remote_version }}
+
       - name: Install
         run: npm install
 
