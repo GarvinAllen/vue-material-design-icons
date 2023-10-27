@@ -6,11 +6,15 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 0' # weekly on sunday @ 12am
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    outputs: 
+      update: 'false'
+      local_version: '0.0.0'
+      remote_version: '0.0.0'
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
