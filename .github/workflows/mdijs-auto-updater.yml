@@ -31,42 +31,23 @@ jobs:
           property: 'devDependencies.@mdi/js'
           fallback: 1.0.0
 
-      - name: Output local version
-        run: echo ${{ steps.local_version.outputs.value }}
-        shell: bash
-
-      - name: Output remote version
-        run: echo ${{ steps.remote_version.outputs.tag }}
-        shell: bash
-
-      - name: Set Local Version variable
-        run: echo "LOCAL_VERSION=${{ steps.local_version.outputs.value }}" >> $GITHUB_ENV
-
-      - name: Set Remote Version variable
-        run: echo "REMOTE_VERSION=${{ steps.remote_version.outputs.tag }}" >> $GITHUB_ENV
-
       - name: Output variables
         shell: bash
         run: |
-          local_version="${LOCAL_VERSION}" 
-          remote_version="${REMOTE_VERSION}"
+          local_version="${{ steps.local_version.outputs.value }}" 
+          remote_version="${{ steps.remote_version.outputs.tag }}"
           remote_version="${remote_version#v}" # remove "v" prefix
 
           echo "LOCAL_VERSION: $local_version"
           echo "REMOTE_VERSION: $remote_version"
           
-          # Compare the versions
-          if [ "$local_version" == "$remote_version" ]; then
-            echo "isUpToDate=true" >> $GITHUB_OUTPUT
-            echo "version=${remote_version}" >> $GITHUB_OUTPUT
-          else
-            echo "isUpToDate=false" >> $GITHUB_OUTPUT
-          fi
+          echo "LOCAL_VERSION=$local_version" >> $GITHUB_ENV
+          echo "REMOTE_VERSION=$remote_version" >> $GITHUB_ENV
 
   update-mdijs-version:
     runs-on: ubuntu-latest
     needs: [mdijs-version]
-    if: needs.mdijs-version.outputs.isUpToDate != 'true'
+    if: ${{ env.LOCAL_VERSION != env.REMOTE_VERSION }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
