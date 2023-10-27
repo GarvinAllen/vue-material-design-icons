@@ -55,10 +55,15 @@ jobs:
     # if: always() && needs.check.outputs.should_update == 'true'
     steps:
       - name: debug 
+        shell: bash
         run: | 
-          echo "update:${needs.check.outputs.should_update}"
-          echo "local:${needs.check.outputs.local_version}"
-          echo "remote:${needs.check.outputs.remote_version}"
+          update=${{needs.check.outputs.should_update}}
+          local_version="${{needs.check.outputs.local_version}}" 
+          remote_version="${{needs.check.outputs.remote_version}}"
+
+          echo "update:${update}"
+          echo "local:${local_version}"
+          echo "remote:${remote_version}"
 
       - uses: actions/checkout@v3
       - name: Setup Node
