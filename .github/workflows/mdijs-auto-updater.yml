@@ -18,23 +18,31 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: mdijs-version-remote
+      - name: remote_version
         uses: tdemin/find-latest-tag@v1
         with:
           repo: https://github.com/Templarian/MaterialDesign-JS
 
-      - id: mdijs-verision-local
+      - id: local_version
         uses: amochkin/action-json@v1
         with:
           mode: read
           property: 'devDependencies.@mdi/js'
           fallback: 1.0.0
 
+      - name: Output local version
+        run: echo ${{ steps.local_version.outputs.value }}
+        shell: bash
+
+      - name: Output remote version
+        run: echo ${{ steps.remote_version.outputs.tag }}
+        shell: bash
+
       - name: Set Local Version variable
-        run: echo "LOCAL_VERSION=${{ steps.mdijs-version-local.outputs.value }}" >> $GITHUB_ENV
+        run: echo "LOCAL_VERSION=${{ steps.local_version.outputs.value }}" >> $GITHUB_ENV
 
       - name: Set Remote Version variable
-        run: echo "REMOTE_VERSION=${{ steps.mdijs-version-remote.outputs.tag }}" >> $GITHUB_ENV
+        run: echo "REMOTE_VERSION=${{ steps.remote_version.outputs.tag }}" >> $GITHUB_ENV
 
       - name: Output variables
         shell: bash
