@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       update: 'false'
-      local_version: '0.0.0'
-      remote_version: '0.0.0'
+      local_version: ${{steps.set_variables.outputs.local_version}}
+      remote_version: ${{steps.set_variables.outputs.remote_version}}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
@@ -35,7 +35,7 @@ jobs:
           property: 'devDependencies.@mdi/js'
           fallback: 1.0.0
 
-      - name: Output variables
+      - id: set_variables
         shell: bash
         run: |
           local_version="${{ steps.local_version.outputs.value }}" 
@@ -44,14 +44,6 @@ jobs:
 
           echo "local_version=${local_version}" >> $GITHUB_OUTPUT
           echo "remote_version=${remote_version}" >> $GITHUB_OUTPUT
-
-          if [ "$local_version" = "$remote_version" ]; then
-            echo "should_update=false"
-            echo "should_update=false" >> $GITHUB_OUTPUT
-          else
-            echo "should_update=true"
-            echo "should_update=true" >> $GITHUB_OUTPUT
-          fi
 
   update:
     runs-on: ubuntu-latest
