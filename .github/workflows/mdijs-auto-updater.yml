@@ -42,8 +42,10 @@ jobs:
           echo "remote_version=${remote_version}" >> $GITHUB_OUTPUT
 
           if [ "$local_version" = "$remote_version" ]; then
+            echo "should_update=false"
             echo "should_update=false" >> $GITHUB_OUTPUT
           else
+            echo "should_update=true"
             echo "should_update=true" >> $GITHUB_OUTPUT
           fi
 
