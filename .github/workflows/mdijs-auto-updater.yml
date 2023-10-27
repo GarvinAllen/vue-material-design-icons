@@ -34,13 +34,17 @@ jobs:
         run: echo "LOCAL_VERSION=${{ steps.mdijs-version-local.outputs.value }}" >> $GITHUB_ENV
 
       - name: Set Remote Version variable
-        run: echo "REMOTE_VERSION=${{ steps.mdijs-version-local.outputs.value }}" >> $GITHUB_ENV
+        run: echo "REMOTE_VERSION=${{ steps.mdijs-version-remote.outputs.tag }}" >> $GITHUB_ENV
 
       - name: Output variables
         shell: bash
         run: |
           local_version="${LOCAL_VERSION}" 
-          remote_version="${REMOTE_VERSION#v}" # remove "v" prefix
+          remote_version="${REMOTE_VERSION}"
+          remote_version="${remote_version#v}" # remove "v" prefix
+
+          echo "LOCAL_VERSION: $local_version"
+          echo "REMOTE_VERSION: $remote_version"
           
           # Compare the versions
           if [ "$local_version" == "$remote_version" ]; then
